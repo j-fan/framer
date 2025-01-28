@@ -18,8 +18,7 @@
   };
 </script>
 
-<div class="frame" class:has-border={!hasFile}>
-  <img src={imgSrc} alt="" />
+<div class="frame" class:has-border={!hasFile} style="background-image: url({imgSrc});">
   <div class="overlay">
     {#if hasFile}
       <button class="remove-button" type="button" on:click={removeFile}>X</button>
@@ -42,6 +41,8 @@
     position: relative;
     border-radius: 1rem;
     overflow: hidden;
+    background-size: cover;
+    background-position: center;
   }
 
   .has-border {

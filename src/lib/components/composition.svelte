@@ -8,32 +8,50 @@
 
   const saveToImage = () => {
     loading = true;
+    const removeButtons = document.querySelectorAll('.remove-button');
+    removeButtons.forEach((b) => {
+      (b as HTMLButtonElement).style.display = 'none';
+    });
+
     htmlToImage
       .toPng(compositionRef)
       .then(function (dataUrl) {
         downloadURL(dataUrl, 'framed.png');
-        loading = false;
       })
       .catch(function (error) {
         console.error('oops, something went wrong!', error);
+      })
+      .finally(() => {
+        removeButtons.forEach((b) => {
+          (b as HTMLButtonElement).style.display = 'block';
+        });
         loading = false;
       });
   };
 </script>
 
-<div class="composition" bind:this={compositionRef}>
-  <Frame />
+<div class="wrapper">
+  <div class="composition" bind:this={compositionRef}>
+    <Frame />
+  </div>
+
+  <button class="save-button" on:click={saveToImage}>
+    {#if loading}
+      Saving...
+    {:else}
+      Save composition
+    {/if}
+  </button>
 </div>
 
-<button class="save-button" on:click={saveToImage}>
-  {#if loading}
-    Saving...
-  {:else}
-    Save composition
-  {/if}
-</button>
-
 <style>
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: start;
+  }
+
   .composition {
     aspect-ratio: 4 / 5;
     width: 100%;
