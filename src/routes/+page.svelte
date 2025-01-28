@@ -1,6 +1,5 @@
 <script lang="ts">
-  import Frame from '$lib/components/frame.svelte';
+  import Composition from '$lib/components/composition.svelte';
 </script>
 
-<div>hello framer app</div>
-<Frame />
+<Composition />
