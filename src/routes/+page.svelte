@@ -1,5 +1,6 @@
 <script lang="ts">
+  import Frame from '$lib/components/frame.svelte';
 </script>
 
-<img src="/img/rose.png" alt="rose" />
 <div>hello framer app</div>
+<Frame />
