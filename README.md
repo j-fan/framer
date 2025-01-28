@@ -1,16 +1,14 @@
 # About
 
-Dream Girl is an interactive artwork created for the MultiFutures exhibition at Bankstown Arts Centre (May/June 2024)
+Framer is a micro-app that frames your photos for instagram. Built for my personal use.
 
 ## Developing
 
 Once you've created a project and installed dependencies with `pnpm install`, start a development server:
 
 ```bash
-npm run dev
+pnpm run dev
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
 ## Building
@@ -18,7 +16,7 @@ npm run dev -- --open
 To create a production version of your app:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
 You can preview the production build with `npm run preview`.
