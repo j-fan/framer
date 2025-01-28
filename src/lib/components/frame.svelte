@@ -3,16 +3,15 @@
 
   let imgSrc = '';
   let files: FileList | undefined = undefined;
-  let frameRef: HTMLDivElement | undefined = undefined;
 
-  $: frameWidth = frameRef?.clientWidth || 1;
+  let frameWidth = 1;
   let isDragging = false;
   let startPosX = 0;
   let startPosY = 0;
   let posX = 0;
   let posY = 0;
-  $: movePercentX = (100 * (startPosX - posX)) / frameWidth;
-  $: movePercentY = (100 * (startPosY - posY)) / frameWidth;
+  $: movePercentX = (100 * (startPosX - posX)) / 100; // TODO Replace 100 with frameWidth after fixing the calculation
+  $: movePercentY = (100 * (startPosY - posY)) / 100;
 
   $: hasFile = files && files.length;
 
@@ -20,7 +19,15 @@
   // It sets the uploaded image as the new image
   $: {
     if (files && files.length) {
+      // Temporary image variable used to measure dimensions
+      const tempImage = new Image();
+
       imgSrc = URL.createObjectURL(files[0]);
+
+      tempImage.src = imgSrc;
+      tempImage.onload = () => {
+        frameWidth = tempImage.width;
+      };
     }
   }
 
@@ -67,13 +74,12 @@
   };
 </script>
 
-<p>{movePercentX} {movePercentY}</p>
+<div>{movePercentX} {movePercentY}</div>
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
   class="frame"
   class:has-border={!hasFile}
   style="background-image: url({imgSrc}); aspect-ratio: {aspectRatio}; background-position: {movePercentX}% {movePercentY}%;"
-  bind:this={frameRef}
   on:mousedown={handleMouseStart}
   on:touchstart={handleTouchStart}
   on:mousemove={handleMouseMove}
