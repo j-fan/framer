@@ -4,15 +4,19 @@
   import Frame from './frame.svelte';
 
   let compositionRef: HTMLDivElement;
+  let loading = false;
 
   const saveToImage = () => {
+    loading = true;
     htmlToImage
       .toPng(compositionRef)
       .then(function (dataUrl) {
         downloadURL(dataUrl, 'framed.png');
+        loading = false;
       })
       .catch(function (error) {
         console.error('oops, something went wrong!', error);
+        loading = false;
       });
   };
 </script>
@@ -20,7 +24,14 @@
 <div class="composition" bind:this={compositionRef}>
   <Frame />
 </div>
-<button class="save-button" on:click={saveToImage}>Save</button>
+
+<button class="save-button" on:click={saveToImage}>
+  {#if loading}
+    Saving...
+  {:else}
+    Save composition
+  {/if}
+</button>
 
 <style>
   .composition {
@@ -30,7 +41,10 @@
   }
 
   .save-button {
-    height: 30px;
-    width: 60px;
+    border: 1px solid black;
+    border-radius: 1rem;
+    padding: 4px 8px;
+    cursor: pointer;
+    background: transparent;
   }
 </style>
