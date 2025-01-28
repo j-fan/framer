@@ -3,8 +3,11 @@
   import * as htmlToImage from 'html-to-image';
   import Frame from './frame.svelte';
 
+  type CompositionLayout = 'portrait' | 'double-landscape' | 'single-landscape' | 'square';
+
   let compositionRef: HTMLDivElement;
   let loading = false;
+  let layout: CompositionLayout = 'portrait';
 
   const saveToImage = () => {
     loading = true;
@@ -31,11 +34,58 @@
 </script>
 
 <div class="wrapper">
+  <div>
+    <button
+      class="button"
+      class:selected-button={layout === 'portrait'}
+      on:click={() => {
+        layout = 'portrait';
+      }}
+    >
+      Portrait
+    </button>
+    <button
+      class="button"
+      class:selected-button={layout === 'single-landscape'}
+      on:click={() => {
+        layout = 'single-landscape';
+      }}
+    >
+      Single landscape
+    </button>
+    <button
+      class="button"
+      class:selected-button={layout === 'double-landscape'}
+      on:click={() => {
+        layout = 'double-landscape';
+      }}
+    >
+      Double landscape
+    </button>
+    <button
+      class="button"
+      class:selected-button={layout === 'square'}
+      on:click={() => {
+        layout = 'square';
+      }}
+    >
+      Square
+    </button>
+  </div>
   <div class="composition" bind:this={compositionRef}>
-    <Frame />
+    {#if layout === 'portrait'}
+      <Frame aspectRatio="4 / 5" />
+    {:else if layout === 'single-landscape'}
+      <Frame aspectRatio="4 / 3" />
+    {:else if layout === 'double-landscape'}
+      <Frame aspectRatio="16 / 9" />
+      <Frame aspectRatio="16 / 9" />
+    {:else if layout === 'square'}
+      <Frame aspectRatio="1" />
+    {/if}
   </div>
 
-  <button class="save-button" on:click={saveToImage}>
+  <button class="button" on:click={saveToImage}>
     {#if loading}
       Saving...
     {:else}
@@ -49,20 +99,30 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    align-items: start;
+    align-items: center;
+    background-color: lightgrey;
+    padding-block: 2rem;
   }
 
   .composition {
     aspect-ratio: 4 / 5;
-    width: 100%;
-    max-width: 400px;
+    height: 100vh;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    background-color: white;
   }
 
-  .save-button {
+  .button {
     border: 1px solid black;
     border-radius: 1rem;
     padding: 4px 8px;
     cursor: pointer;
     background: transparent;
+  }
+
+  .selected-button {
+    background-color: lightgreen;
   }
 </style>

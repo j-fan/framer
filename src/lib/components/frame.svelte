@@ -74,7 +74,7 @@
   };
 </script>
 
-<div>{movePercentX} {movePercentY}</div>
+<!-- <div>{movePercentX} {movePercentY}</div> -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
   class="frame"
