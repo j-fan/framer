@@ -45,8 +45,9 @@
       return;
     }
 
-    const movePercentageX = (100 * (currentX - mouseDownX)) / frameWidth;
-    const movePercentageY = (100 * (currentY - mouseDownY)) / frameWidth;
+    const moveSpeed = 5;
+    const movePercentageX = moveSpeed * (currentX - mouseDownX);
+    const movePercentageY = moveSpeed * (currentY - mouseDownY);
 
     const actualMovePercentageX = (1 - zoomLevel / 100) * movePercentageX;
     const actualMovePercentageY = (1 - zoomLevel / 100) * movePercentageY;
