@@ -3,8 +3,8 @@
 
   const title = 'Framer';
   const description = `Frames your photos for instagram`;
-  const socialMediaImage = 'https://dreamgirl.janefan.xyz/img/dream-girl-social.jpg';
-  const websiteLink = 'https://dreamgirl.janefan.xyz/';
+  const socialMediaImage = 'https://framer-two-jade.vercel.app/icon/icon-512x512.png';
+  const websiteLink = 'https://framer-two-jade.vercel.app/';
 </script>
 
 <svelte:head>
