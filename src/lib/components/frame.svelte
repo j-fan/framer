@@ -4,14 +4,15 @@
   let imgSrc = '';
   let files: FileList | undefined = undefined;
 
+  let frameRef: HTMLDivElement;
   let frameWidth = 1;
   let isDragging = false;
-  let startPosX = 0;
-  let startPosY = 0;
-  let posX = 0;
-  let posY = 0;
-  $: movePercentX = (100 * (startPosX - posX)) / 100; // TODO Replace 100 with frameWidth after fixing the calculation
-  $: movePercentY = (100 * (startPosY - posY)) / 100;
+  let mouseDownX = 0;
+  let mouseDownY = 0;
+  let elePosX = 0;
+  let elePosY = 0;
+  let bgPercentX = 0;
+  let bgPercentY = 0;
 
   $: hasFile = files && files.length;
 
@@ -37,32 +38,43 @@
     files = undefined;
   };
 
-  const handleMouseStart = (e: MouseEvent) => {
-    startPosX = e.pageX;
-    startPosY = e.pageY;
+  const startDrag = (x: number, y: number) => {
+    elePosX = bgPercentX;
+    elePosY = bgPercentY;
+
+    mouseDownX = x;
+    mouseDownY = y;
     isDragging = true;
+  };
+
+  const updateDrag = (currentX: number, currentY: number) => {
+    if (!isDragging) {
+      return;
+    }
+
+    const movePercentageX = (100 * (currentX - mouseDownX)) / 100;
+    const movePercentageY = (100 * (currentY - mouseDownY)) / 100;
+
+    if (currentX !== mouseDownX && currentY !== mouseDownY) {
+      bgPercentX = elePosX + movePercentageX;
+      bgPercentY = elePosY + movePercentageY;
+    }
+  };
+
+  const handleMouseStart = (e: MouseEvent) => {
+    startDrag(e.pageX, e.pageY);
   };
 
   const handleTouchStart = (e: TouchEvent) => {
-    startPosX = e.touches[0].pageX;
-    startPosY = e.touches[0].pageY;
-    isDragging = true;
+    startDrag(e.touches[0].pageX, e.touches[0].pageY);
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!isDragging) {
-      return;
-    }
-    posX = e.pageX;
-    posY = e.pageY;
+    updateDrag(e.pageX, e.pageY);
   };
 
   const handleTouchMove = (e: TouchEvent) => {
-    if (!isDragging) {
-      return;
-    }
-    posX = e.touches[0].pageX;
-    posY = e.touches[0].pageY;
+    updateDrag(e.touches[0].pageX, e.touches[0].pageY);
   };
 
   const handleMoveEnd = () => {
@@ -73,9 +85,10 @@
 <!-- <div>{movePercentX} {movePercentY}</div> -->
 <!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
+  bind:this={frameRef}
   class="frame"
   class:has-border={!hasFile}
-  style="background-image: url({imgSrc}); aspect-ratio: {aspectRatio}; background-position: {movePercentX}% {movePercentY}%;"
+  style="background-image: url({imgSrc}); aspect-ratio: {aspectRatio}; background-position: {bgPercentX}% {bgPercentY}%;"
   on:mousedown={handleMouseStart}
   on:touchstart={handleTouchStart}
   on:mousemove={handleMouseMove}
@@ -98,7 +111,7 @@
     position: relative;
     border-radius: 1rem;
     overflow: hidden;
-    background-size: cover;
+    background-size: 100%;
     background-repeat: no-repeat;
   }
 
