@@ -111,10 +111,11 @@
   .composition {
     width: 100%;
     aspect-ratio: 4 / 5;
-    padding: 1rem;
+    padding: 0.5rem;
+    gap: 0.5rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     background-color: white;
   }
 
