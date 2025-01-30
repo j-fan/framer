@@ -9,27 +9,29 @@
   let loading = false;
   let layout: CompositionLayout = 'portrait';
 
-  const saveToImage = () => {
+  const saveToImage = async () => {
     loading = true;
     const removeButtons = document.querySelectorAll('.remove-button');
     removeButtons.forEach((b) => {
       (b as HTMLButtonElement).style.display = 'none';
     });
 
-    htmlToImage
-      .toPng(compositionRef)
-      .then(function (dataUrl) {
-        downloadURL(dataUrl, 'framed.png');
-      })
-      .catch(function (error) {
-        console.error('oops, something went wrong!', error);
-      })
-      .finally(() => {
-        removeButtons.forEach((b) => {
-          (b as HTMLButtonElement).style.display = 'block';
-        });
-        loading = false;
+    try {
+      // Strange workaround from iOS Safari https://github.com/bubkoo/html-to-image/issues/361
+      await htmlToImage.toPng(compositionRef);
+      await htmlToImage.toPng(compositionRef);
+      await htmlToImage.toPng(compositionRef);
+
+      const result = await htmlToImage.toPng(compositionRef);
+      downloadURL(result, 'framed');
+    } catch (error) {
+      console.error('oops, something went wrong!', error);
+    } finally {
+      removeButtons.forEach((b) => {
+        (b as HTMLButtonElement).style.display = 'block';
       });
+      loading = false;
+    }
   };
 </script>
 
