@@ -81,8 +81,8 @@
     {:else if layout === 'single-landscape'}
       <Frame aspectRatio="4 / 3" />
     {:else if layout === 'double-landscape'}
-      <Frame aspectRatio="5 / 3" />
-      <Frame aspectRatio="5 / 3" />
+      <Frame />
+      <Frame />
     {:else if layout === 'square'}
       <Frame aspectRatio="1" />
     {/if}

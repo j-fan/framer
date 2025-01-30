@@ -2,7 +2,11 @@
   import Gesto from 'gesto';
   import { onMount } from 'svelte';
 
-  export let aspectRatio = '4 / 5';
+  /**
+   * If no aspect ratio, the frame
+   * will grow to fit the composition
+   */
+  export let aspectRatio = '';
 
   let imgSrc = '';
   let files: FileList | undefined = undefined;
@@ -64,7 +68,9 @@
   bind:this={frameRef}
   class="frame"
   class:has-border={!hasFile}
-  style="background-image: url({imgSrc}); aspect-ratio: {aspectRatio}; background-position: {bgPercentX}% {bgPercentY}%; background-size: {zoomLevel}%;"
+  style="background-image: url({imgSrc}); aspect-ratio: {aspectRatio}; background-position: {bgPercentX}% {bgPercentY}%; background-size: {zoomLevel}%; flex-grow:{aspectRatio
+    ? 0
+    : 1};"
 >
   <div class="overlay">
     {#if hasFile}
@@ -83,6 +89,7 @@
     overflow: hidden;
     background-size: 100%;
     background-repeat: no-repeat;
+    width: 100%;
   }
 
   .has-border {
