@@ -5,7 +5,7 @@
   let files: FileList | undefined = undefined;
 
   let frameRef: HTMLDivElement;
-  let frameWidth = 1;
+  $: frameWidth = frameRef?.clientWidth ?? 100;
   let isDragging = false;
   let mouseDownX = 0;
   let mouseDownY = 0;
@@ -13,6 +13,7 @@
   let elePosY = 0;
   let bgPercentX = 0;
   let bgPercentY = 0;
+  let zoomLevel = 10;
 
   $: hasFile = files && files.length;
 
@@ -20,15 +21,7 @@
   // It sets the uploaded image as the new image
   $: {
     if (files && files.length) {
-      // Temporary image variable used to measure dimensions
-      const tempImage = new Image();
-
       imgSrc = URL.createObjectURL(files[0]);
-
-      tempImage.src = imgSrc;
-      tempImage.onload = () => {
-        frameWidth = tempImage.width;
-      };
     }
   }
 
@@ -52,12 +45,15 @@
       return;
     }
 
-    const movePercentageX = (100 * (currentX - mouseDownX)) / 100;
-    const movePercentageY = (100 * (currentY - mouseDownY)) / 100;
+    const movePercentageX = (100 * (currentX - mouseDownX)) / frameWidth;
+    const movePercentageY = (100 * (currentY - mouseDownY)) / frameWidth;
+
+    const actualMovePercentageX = (1 - zoomLevel / 100) * movePercentageX;
+    const actualMovePercentageY = (1 - zoomLevel / 100) * movePercentageY;
 
     if (currentX !== mouseDownX && currentY !== mouseDownY) {
-      bgPercentX = elePosX + movePercentageX;
-      bgPercentY = elePosY + movePercentageY;
+      bgPercentX = elePosX - actualMovePercentageX;
+      bgPercentY = elePosY - actualMovePercentageY;
     }
   };
 
