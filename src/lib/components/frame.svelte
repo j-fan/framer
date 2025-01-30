@@ -38,21 +38,18 @@
   };
 
   const handleMouseStart = (e: MouseEvent) => {
-    e.preventDefault();
     startPosX = e.pageX;
     startPosY = e.pageY;
     isDragging = true;
   };
 
   const handleTouchStart = (e: TouchEvent) => {
-    e.preventDefault();
     startPosX = e.touches[0].pageX;
     startPosY = e.touches[0].pageY;
     isDragging = true;
   };
 
   const handleMouseMove = (e: MouseEvent) => {
-    e.preventDefault();
     if (!isDragging) {
       return;
     }
@@ -61,7 +58,6 @@
   };
 
   const handleTouchMove = (e: TouchEvent) => {
-    e.preventDefault();
     if (!isDragging) {
       return;
     }
@@ -92,13 +88,7 @@
       <button class="remove-button" type="button" on:click={removeFile}>X</button>
     {:else}
       <label for="file-upload" class="custom-file-input">Upload image</label>
-      <input
-        id="file-upload"
-        bind:files
-        type="file"
-        accept="image/png, image/jpeg"
-        class="file-input"
-      />
+      <input id="file-upload" bind:files type="file" accept="image/*" class="file-input" />
     {/if}
   </div>
 </div>
@@ -136,6 +126,7 @@
     cursor: pointer;
     background: transparent;
     min-width: 34px;
+    color: black;
   }
 
   .remove-button {

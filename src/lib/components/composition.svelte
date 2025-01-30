@@ -34,7 +34,7 @@
 </script>
 
 <div class="wrapper">
-  <div>
+  <div class="button-container">
     <button
       class="button"
       class:selected-button={layout === 'portrait'}
@@ -78,8 +78,8 @@
     {:else if layout === 'single-landscape'}
       <Frame aspectRatio="4 / 3" />
     {:else if layout === 'double-landscape'}
-      <Frame aspectRatio="16 / 9" />
-      <Frame aspectRatio="16 / 9" />
+      <Frame aspectRatio="5 / 3" />
+      <Frame aspectRatio="5 / 3" />
     {:else if layout === 'square'}
       <Frame aspectRatio="1" />
     {/if}
@@ -101,12 +101,14 @@
     gap: 1rem;
     align-items: center;
     background-color: lightgrey;
-    padding-block: 2rem;
+    padding: 1rem;
+    width: 100%;
+    min-height: 100%;
   }
 
   .composition {
+    width: 100%;
     aspect-ratio: 4 / 5;
-    height: 100vh;
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -120,9 +122,16 @@
     padding: 4px 8px;
     cursor: pointer;
     background: transparent;
+    color: black;
   }
 
   .selected-button {
     background-color: lightgreen;
+  }
+
+  .button-container {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
   }
 </style>
