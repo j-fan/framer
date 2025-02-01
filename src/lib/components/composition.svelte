@@ -27,6 +27,8 @@
       await htmlToImage.toJpeg(compositionRef, htmlToImageOptions);
       await htmlToImage.toJpeg(compositionRef, htmlToImageOptions);
       await htmlToImage.toJpeg(compositionRef, htmlToImageOptions);
+      await htmlToImage.toJpeg(compositionRef, htmlToImageOptions);
+      await htmlToImage.toJpeg(compositionRef, htmlToImageOptions);
 
       const result = await htmlToImage.toJpeg(compositionRef, htmlToImageOptions);
       downloadURL(result, 'framed');
