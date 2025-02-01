@@ -7,6 +7,7 @@
    * will grow to fit the composition
    */
   export let aspectRatio = '';
+  export let isRounded = true;
 
   let imgSrc = '';
   let files: FileList | undefined = undefined;
@@ -68,6 +69,7 @@
   bind:this={frameRef}
   class="frame"
   class:has-border={!hasFile}
+  class:is-rounded={isRounded}
   style="background-image: url({imgSrc}); aspect-ratio: {aspectRatio}; background-position: {bgPercentX}% {bgPercentY}%; background-size: {zoomLevel}%; flex-grow:{aspectRatio
     ? 0
     : 1};"
@@ -85,11 +87,14 @@
 <style>
   .frame {
     position: relative;
-    border-radius: 1rem;
     overflow: hidden;
     background-size: 100%;
     background-repeat: no-repeat;
     width: 100%;
+  }
+
+  .is-rounded {
+    border-radius: 1rem;
   }
 
   .has-border {

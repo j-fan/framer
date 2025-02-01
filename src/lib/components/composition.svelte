@@ -5,6 +5,7 @@
 
   type CompositionLayout =
     | 'portrait'
+    | 'portrait-no-padding'
     | 'double-landscape'
     | 'single-landscape32'
     | 'single-landscape169'
@@ -50,6 +51,15 @@
     </button>
     <button
       class="button"
+      class:selected-button={layout === 'portrait-no-padding'}
+      on:click={() => {
+        layout = 'portrait-no-padding';
+      }}
+    >
+      Portrait - no padding
+    </button>
+    <button
+      class="button"
       class:selected-button={layout === 'single-landscape32'}
       on:click={() => {
         layout = 'single-landscape32';
@@ -85,9 +95,15 @@
       Square
     </button>
   </div>
-  <div class="composition" bind:this={compositionRef}>
+  <div
+    class="composition"
+    bind:this={compositionRef}
+    class:has-padding={layout !== 'portrait-no-padding'}
+  >
     {#if layout === 'portrait'}
       <Frame aspectRatio="4 / 5" />
+    {:else if layout === 'portrait-no-padding'}
+      <Frame aspectRatio="4 / 5" isRounded={false} />
     {:else if layout === 'single-landscape32'}
       <Frame aspectRatio="3 / 2" />
     {:else if layout === 'single-landscape169'}
@@ -116,15 +132,18 @@
     gap: 1rem;
     align-items: center;
     background-color: lightgrey;
-    padding: 1rem;
     width: 100%;
     min-height: 100%;
+    padding: 1rem;
+  }
+
+  .has-padding {
+    padding: 0.5rem;
   }
 
   .composition {
     width: 100%;
     aspect-ratio: 4 / 5;
-    padding: 0.5rem;
     gap: 0.5rem;
     display: flex;
     flex-direction: column;
