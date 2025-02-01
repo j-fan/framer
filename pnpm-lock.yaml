@@ -8,9 +8,9 @@ dependencies:
   gesto:
     specifier: ^1.19.4
     version: 1.19.4
-  html-to-image:
-    specifier: ^1.11.11
-    version: 1.11.11
+  modern-screenshot:
+    specifier: ^4.5.5
+    version: 4.5.5
 
 devDependencies:
   '@sveltejs/adapter-vercel':
@@ -2023,10 +2023,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /html-to-image@1.11.11:
-    resolution: {integrity: sha512-9gux8QhvjRO/erSnDPv28noDZcPZmYE7e1vFsBLKLlRlKDSqNJYebj6Qz1TGd5lsRV+X+xYyjCKjuZdABinWjA==}
-    dev: false
-
   /htmlparser2@8.0.2:
     resolution: {integrity: sha512-GYdjWKDkbRLkZ5geuHs5NY1puJ+PXwP7+fHPRz06Eirsb9ugf6d8kkXav6ADhcODhFFPMIXyxkxSuMf3D6NCFA==}
     dependencies:
@@ -2337,6 +2333,10 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
     dev: true
+
+  /modern-screenshot@4.5.5:
+    resolution: {integrity: sha512-k5AC0UjY8YccnKn53upeQMzgDdPYkDN/706ma3yPHCwOZi+AoL0NeMlLS3nQwA/s0xrM7s8WO+UWnx5YJNpQeA==}
+    dev: false
 
   /mri@1.2.0:
     resolution: {integrity: sha512-tzzskb3bG8LvYGFF/mDTpq3jpI6Q9wc3LEmBaghu+DdCssd1FakN7Bc0hVNmEyGq1bq3RgfkCb3cmQLpNPOroA==}
