@@ -21,11 +21,9 @@
       (b as HTMLButtonElement).style.display = 'none';
     });
 
-    const htmlToImageOptions = { pixelRatio: 4, quality: 0.9 };
+    const htmlToImageOptions = { pixelRatio: 2, quality: 0.9 };
     try {
       // Strange workaround from iOS Safari https://github.com/bubkoo/html-to-image/issues/361
-      await htmlToImage.toJpeg(compositionRef, htmlToImageOptions);
-      await htmlToImage.toJpeg(compositionRef, htmlToImageOptions);
       await htmlToImage.toJpeg(compositionRef, htmlToImageOptions);
       await htmlToImage.toJpeg(compositionRef, htmlToImageOptions);
       await htmlToImage.toJpeg(compositionRef, htmlToImageOptions);
