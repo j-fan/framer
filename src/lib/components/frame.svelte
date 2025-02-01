@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import interact from 'interactjs';
+  import Interact from 'interactjs';
   /**
    * If no aspect ratio, the frame
    * will grow to fit the composition
@@ -26,22 +26,13 @@
     }
   }
 
-  const dragMoveListener = (event: any) => {
-    const target = event.target;
-    // keep the dragged position in the data-x/data-y attributes
-    const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-    const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-    bgPercentX = x;
-    bgPercentY = y;
-
-    // update the position attributes
-    target.setAttribute('data-x', x);
-    target.setAttribute('data-y', y);
+  const dragMoveListener = (event: Interact.DragEvent) => {
+    bgPercentX = bgPercentX - event.dx;
+    bgPercentY = bgPercentY + event.dy;
   };
 
   onMount(() => {
-    interact(frameRef)
+    Interact(frameRef)
       .gesturable({
         listeners: {
           move(event) {
