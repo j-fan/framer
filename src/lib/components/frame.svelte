@@ -12,8 +12,8 @@
   let files: FileList | undefined = undefined;
 
   let frameRef: HTMLDivElement;
-  let bgPercentX = 0;
-  let bgPercentY = 0;
+  let bgPercentX = 50;
+  let bgPercentY = 50;
   let zoomLevel = 100;
 
   $: hasFile = files && files.length;
@@ -28,7 +28,7 @@
 
   const dragMoveListener = (event: Interact.DragEvent) => {
     bgPercentX = bgPercentX - event.dx;
-    bgPercentY = bgPercentY + event.dy;
+    bgPercentY = bgPercentY - event.dy;
   };
 
   onMount(() => {
