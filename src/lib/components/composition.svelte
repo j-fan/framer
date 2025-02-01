@@ -3,7 +3,12 @@
   import * as htmlToImage from 'html-to-image';
   import Frame from './frame.svelte';
 
-  type CompositionLayout = 'portrait' | 'double-landscape' | 'single-landscape' | 'square';
+  type CompositionLayout =
+    | 'portrait'
+    | 'double-landscape'
+    | 'single-landscape32'
+    | 'single-landscape169'
+    | 'square';
 
   let compositionRef: HTMLDivElement;
   let loading = false;
@@ -49,12 +54,21 @@
     </button>
     <button
       class="button"
-      class:selected-button={layout === 'single-landscape'}
+      class:selected-button={layout === 'single-landscape32'}
       on:click={() => {
-        layout = 'single-landscape';
+        layout = 'single-landscape32';
       }}
     >
-      Single landscape
+      Landscape 3:2
+    </button>
+    <button
+      class="button"
+      class:selected-button={layout === 'single-landscape169'}
+      on:click={() => {
+        layout = 'single-landscape169';
+      }}
+    >
+      Landscape 6:9
     </button>
     <button
       class="button"
@@ -78,8 +92,10 @@
   <div class="composition" bind:this={compositionRef}>
     {#if layout === 'portrait'}
       <Frame aspectRatio="4 / 5" />
-    {:else if layout === 'single-landscape'}
-      <Frame aspectRatio="4 / 3" />
+    {:else if layout === 'single-landscape32'}
+      <Frame aspectRatio="3 / 2" />
+    {:else if layout === 'single-landscape169'}
+      <Frame aspectRatio="16 / 9" />
     {:else if layout === 'double-landscape'}
       <Frame />
       <Frame />
