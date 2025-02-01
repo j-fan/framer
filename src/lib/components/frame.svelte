@@ -1,7 +1,6 @@
 <script lang="ts">
-  import Gesto from 'gesto';
   import { onMount } from 'svelte';
-
+  import interact from 'interactjs';
   /**
    * If no aspect ratio, the frame
    * will grow to fit the composition
@@ -13,8 +12,6 @@
   let files: FileList | undefined = undefined;
 
   let frameRef: HTMLDivElement;
-  let elePosX = 0;
-  let elePosY = 0;
   let bgPercentX = 0;
   let bgPercentY = 0;
   let zoomLevel = 100;
@@ -29,35 +26,41 @@
     }
   }
 
+  const dragMoveListener = (event: any) => {
+    const target = event.target;
+    // keep the dragged position in the data-x/data-y attributes
+    const x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
+    const y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
+
+    bgPercentX = x;
+    bgPercentY = y;
+
+    // update the position attributes
+    target.setAttribute('data-x', x);
+    target.setAttribute('data-y', y);
+  };
+
   onMount(() => {
-    const gesto = new Gesto(frameRef, {
-      container: window,
-      pinchOutside: true,
-      pinchThreshold: 0
-    })
-      .on('pinch', (e) => {
-        zoomLevel = e.scale * 100;
+    interact(frameRef)
+      .gesturable({
+        listeners: {
+          move(event) {
+            zoomLevel = event.scale * 100;
+            dragMoveListener(event);
+          }
+        }
       })
-      .on('dragStart', (e) => {
-        elePosX = bgPercentX;
-        elePosY = bgPercentY;
-      })
-      .on('drag', (e) => {
-        bgPercentX = elePosX - e.distX;
-        bgPercentY = elePosY - e.distY;
+      .draggable({
+        listeners: { move: dragMoveListener }
       });
 
-    return () => {
-      gesto.unset();
-    };
+    return () => {};
   });
 
   const removeFile = () => {
     URL.revokeObjectURL(imgSrc);
     imgSrc = '';
     files = undefined;
-    elePosX = 0;
-    elePosY = 0;
     bgPercentX = 0;
     bgPercentY = 0;
     zoomLevel = 100;

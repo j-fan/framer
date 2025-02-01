@@ -35,7 +35,7 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"gesto": "^1.19.4",
+		"interactjs": "^1.10.27",
 		"modern-screenshot": "^4.5.5"
 	}
 }
