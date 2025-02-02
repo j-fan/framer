@@ -1,7 +1,7 @@
 <script lang="ts">
   import { downloadURL } from '$lib/utils/download';
   import Frame from './frame.svelte';
-  import { domToJpeg } from 'modern-screenshot';
+  import { domToPng } from 'modern-screenshot';
 
   type CompositionLayout =
     | 'portrait'
@@ -22,10 +22,8 @@
       (b as HTMLButtonElement).style.display = 'none';
     });
 
-    const htmlToImageOptions = { pixelRatio: 2, quality: 0.9 };
     try {
-      // Strange workaround from iOS Safari https://github.com/bubkoo/html-to-image/issues/361
-      const result = await domToJpeg(compositionRef, htmlToImageOptions);
+      const result = await domToPng(compositionRef, { scale: 4, quality: 0.9 });
       downloadURL(result, 'framed');
     } catch (error) {
       console.error('oops, something went wrong!', error);
