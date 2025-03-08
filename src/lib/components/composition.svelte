@@ -5,7 +5,7 @@
 
   type CompositionLayout =
     | 'portrait'
-    | 'portrait-no-padding'
+    | 'small-portrait'
     | 'double-landscape'
     | 'single-landscape32'
     | 'single-landscape169'
@@ -56,13 +56,13 @@
     </button>
     <button
       class="button"
-      class:selected-button={layout === 'portrait-no-padding'}
+      class:selected-button={layout === 'small-portrait'}
       on:click={() => {
-        layout = 'portrait-no-padding';
+        layout = 'small-portrait';
         hasBlurredBg = false;
       }}
     >
-      Portrait - no padding
+      Small portrait
     </button>
     <button
       class="button"
@@ -114,18 +114,16 @@
       Blur BG
     </button>
   </div>
-  <div
-    class="composition"
-    bind:this={compositionRef}
-    class:has-padding={layout !== 'portrait-no-padding'}
-  >
+  <div class="composition" bind:this={compositionRef}>
     {#if hasBlurredBg && frameImageSrc}
       <div class="background-blur" style="background-image: url({frameImageSrc});" />
     {/if}
     {#if layout === 'portrait'}
       <Frame aspectRatio="4 / 5" {onImageChange} />
-    {:else if layout === 'portrait-no-padding'}
-      <Frame aspectRatio="4 / 5" isRounded={false} {onImageChange} />
+    {:else if layout === 'small-portrait'}
+      <div class="padded-small-portrait">
+        <Frame aspectRatio="4 / 5" {onImageChange} />
+      </div>
     {:else if layout === 'single-landscape32'}
       <Frame aspectRatio="3 / 2" {onImageChange} />
     {:else if layout === 'single-landscape169'}
@@ -159,8 +157,12 @@
     padding: 1rem;
   }
 
-  .has-padding {
-    padding: 0.5rem;
+  .padded-small-portrait {
+    width: 100%;
+    height: 100%;
+    padding: 2.5rem;
+    display: grid;
+    place-items: center;
   }
 
   .composition {
@@ -173,6 +175,7 @@
     background-color: white;
     position: relative;
     overflow: hidden;
+    padding: 0.5rem;
   }
 
   .background-blur {
@@ -183,7 +186,7 @@
     top: -25%;
     width: 150%;
     height: 150%;
-    filter: blur(20px) brightness(1.2) contrast(0.8);
+    filter: blur(20px) brightness(0.8) contrast(0.8);
   }
 
   .button {
