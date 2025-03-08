@@ -35,6 +35,8 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@types/image-blob-reduce": "^4.1.4",
+		"image-blob-reduce": "^4.1.0",
 		"interactjs": "^1.10.27",
 		"modern-screenshot": "^4.5.5"
 	}

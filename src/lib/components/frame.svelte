@@ -1,6 +1,8 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import Interact from 'interactjs';
+  import reduce from 'image-blob-reduce';
+
   /**
    * If no aspect ratio, the frame
    * will grow to fit the composition
@@ -15,6 +17,7 @@
   let bgPercentX = 50;
   let bgPercentY = 50;
   let zoomLevel = 100;
+  let isResizing = false;
 
   $: hasFile = files && files.length;
 
@@ -22,13 +25,21 @@
   // It sets the uploaded image as the new image
   $: {
     if (files && files.length) {
-      imgSrc = URL.createObjectURL(files[0]);
+      resizeAndAssignImgSrc(files);
     }
   }
 
   const dragMoveListener = (event: Interact.DragEvent) => {
     bgPercentX = bgPercentX - event.dx;
     bgPercentY = bgPercentY - event.dy;
+  };
+
+  const resizeAndAssignImgSrc = async (files: FileList) => {
+    isResizing = true;
+    const file = files[0];
+    const reduced = await reduce().toBlob(file, { max: 2000 });
+    imgSrc = URL.createObjectURL(reduced);
+    isResizing = false;
   };
 
   onMount(() => {
@@ -69,7 +80,9 @@
     : 1};"
 >
   <div class="overlay">
-    {#if hasFile}
+    {#if isResizing}
+      <p>Resizing...</p>
+    {:else if hasFile}
       <button class="remove-button" type="button" on:click={removeFile}>X</button>
     {:else}
       <label for="file-upload" class="custom-file-input">Upload image</label>

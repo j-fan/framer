@@ -23,10 +23,6 @@
     });
 
     try {
-      // When using large files, domToPng can fail and produce a blank image
-      // so attempt this method multiple times. Only happens on Safari.
-      await domToPng(compositionRef, { scale: 4, quality: 0.9 });
-      await domToPng(compositionRef, { scale: 4, quality: 0.9 });
       const result = await domToPng(compositionRef, { scale: 4, quality: 0.9 });
       downloadURL(result, 'framed');
     } catch (error) {
