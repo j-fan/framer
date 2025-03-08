@@ -14,6 +14,8 @@
   let compositionRef: HTMLDivElement;
   let loading = false;
   let layout: CompositionLayout = 'portrait';
+  let frameImageSrc = '';
+  let hasBlurredBg = false;
 
   const saveToImage = async () => {
     loading = true;
@@ -34,6 +36,10 @@
       loading = false;
     }
   };
+
+  const onImageChange = (newImage: string) => {
+    frameImageSrc = newImage;
+  };
 </script>
 
 <div class="wrapper">
@@ -43,6 +49,7 @@
       class:selected-button={layout === 'portrait'}
       on:click={() => {
         layout = 'portrait';
+        hasBlurredBg = false;
       }}
     >
       Portrait
@@ -52,6 +59,7 @@
       class:selected-button={layout === 'portrait-no-padding'}
       on:click={() => {
         layout = 'portrait-no-padding';
+        hasBlurredBg = false;
       }}
     >
       Portrait - no padding
@@ -61,6 +69,7 @@
       class:selected-button={layout === 'single-landscape32'}
       on:click={() => {
         layout = 'single-landscape32';
+        hasBlurredBg = false;
       }}
     >
       Landscape 3:2
@@ -70,6 +79,7 @@
       class:selected-button={layout === 'single-landscape169'}
       on:click={() => {
         layout = 'single-landscape169';
+        hasBlurredBg = false;
       }}
     >
       Landscape 6:9
@@ -79,6 +89,7 @@
       class:selected-button={layout === 'double-landscape'}
       on:click={() => {
         layout = 'double-landscape';
+        hasBlurredBg = false;
       }}
     >
       Double landscape
@@ -88,9 +99,19 @@
       class:selected-button={layout === 'square'}
       on:click={() => {
         layout = 'square';
+        hasBlurredBg = false;
       }}
     >
       Square
+    </button>
+    <button
+      class="button"
+      class:selected-button={hasBlurredBg}
+      on:click={() => {
+        hasBlurredBg = !hasBlurredBg;
+      }}
+    >
+      Blur BG
     </button>
   </div>
   <div
@@ -98,19 +119,22 @@
     bind:this={compositionRef}
     class:has-padding={layout !== 'portrait-no-padding'}
   >
+    {#if hasBlurredBg && frameImageSrc}
+      <div class="background-blur" style="background-image: url({frameImageSrc});" />
+    {/if}
     {#if layout === 'portrait'}
-      <Frame aspectRatio="4 / 5" />
+      <Frame aspectRatio="4 / 5" {onImageChange} />
     {:else if layout === 'portrait-no-padding'}
-      <Frame aspectRatio="4 / 5" isRounded={false} />
+      <Frame aspectRatio="4 / 5" isRounded={false} {onImageChange} />
     {:else if layout === 'single-landscape32'}
-      <Frame aspectRatio="3 / 2" />
+      <Frame aspectRatio="3 / 2" {onImageChange} />
     {:else if layout === 'single-landscape169'}
-      <Frame aspectRatio="16 / 9" />
+      <Frame aspectRatio="16 / 9" {onImageChange} />
     {:else if layout === 'double-landscape'}
-      <Frame />
-      <Frame />
+      <Frame {onImageChange} />
+      <Frame {onImageChange} />
     {:else if layout === 'square'}
-      <Frame aspectRatio="1" />
+      <Frame aspectRatio="1" {onImageChange} />
     {/if}
   </div>
 
@@ -147,6 +171,19 @@
     flex-direction: column;
     justify-content: center;
     background-color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .background-blur {
+    background-color: black;
+    background-size: cover;
+    position: absolute;
+    left: -25%;
+    top: -25%;
+    width: 150%;
+    height: 150%;
+    filter: blur(20px) brightness(1.2) contrast(0.8);
   }
 
   .button {

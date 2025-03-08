@@ -9,6 +9,7 @@
    */
   export let aspectRatio = '';
   export let isRounded = true;
+  export let onImageChange: (imgSrc: string) => void;
 
   let imgSrc = '';
   let files: FileList | undefined = undefined;
@@ -39,6 +40,7 @@
     const file = files[0];
     const reduced = await reduce().toBlob(file, { max: 2000 });
     imgSrc = URL.createObjectURL(reduced);
+    onImageChange(imgSrc);
     isResizing = false;
   };
 
@@ -66,6 +68,7 @@
     bgPercentX = 0;
     bgPercentY = 0;
     zoomLevel = 100;
+    onImageChange('');
   };
 </script>
 
